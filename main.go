@@ -14,6 +14,7 @@ type book struct {
 }
 
 var books = []book{
+
 	{ID: "1", Title: "Science of Logic", Author: "Georg Wilhelm Friedrich Hegel"},
 	{ID: "2", Title: "The Wisdom of Life", Author: "Arthur Schopenhauer"},
 	{ID: "3", Title: "The Metamorphosis", Author: "Franz Kafka"},
@@ -22,6 +23,7 @@ var books = []book{
 }
 
 func main() {
+
 	router := gin.Default()
 	router.GET("/books", getBooks)
 	router.GET("/books/:id", getBookByID)
@@ -38,13 +40,17 @@ func main() {
 	}
 
 	router.Run(httpServer + ":" + httpPort)
+
 }
 
 func getBooks(c *gin.Context) {
+
 	c.IndentedJSON(http.StatusOK, books)
+
 }
 
 func postBooks(c *gin.Context) {
+
 	var newBook book
 
 	// Call BindJSON to bind the received JSON to newBook.
@@ -54,9 +60,11 @@ func postBooks(c *gin.Context) {
 
 	books = append(books, newBook)
 	c.IndentedJSON(http.StatusCreated, newBook)
+
 }
 
 func getBookByID(c *gin.Context) {
+
 	id := c.Param("id")
 
 	for _, a := range books {
@@ -66,4 +74,5 @@ func getBookByID(c *gin.Context) {
 		}
 	}
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "book not found"})
+
 }
