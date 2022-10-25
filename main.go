@@ -20,6 +20,7 @@ var books = []book{
 	{ID: "3", Title: "The Metamorphosis", Author: "Franz Kafka"},
 	{ID: "4", Title: "Das Kapital", Author: "Karl Marx"},
 	{ID: "5", Title: "The Sorrows of Young Werther", Author: "Johann Wolfgang von Goethe"},
+	{ID: "6", Title: "Gomorra", Author: "Roberto Saviano"},
 }
 
 func main() {
