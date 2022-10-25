@@ -44,4 +44,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: book-example:latest 
+        tags: samer955/book-example:latest
