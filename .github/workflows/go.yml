@@ -79,5 +79,7 @@ jobs:
          version: 'latest' # default is latest stable
       id: install
       
-    - name: Switch to staging cluster
-      run: kubectl apply -f deployment.yaml
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+    - name: Try the cluster !
+      run: kubectl get pods -A
