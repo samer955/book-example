@@ -79,7 +79,5 @@ jobs:
          version: 'latest' # default is latest stable
       id: install
       
-    - name: Start minikube
-      uses: medyagh/setup-minikube@master
-    - name: Try the cluster !
+    - name: Try Minikube
       run: kubectl get pods -A
