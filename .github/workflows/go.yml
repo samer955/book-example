@@ -47,7 +47,7 @@ jobs:
     - name: Set up Docker Buildx # setup for the docker container 
       uses: docker/setup-buildx-action@v2
       
-    #Docker Login action for GitHub registry, see https://github.com/marketplace/actions/docker-login 
+    # Docker Login action for GitHub registry, see https://github.com/marketplace/actions/docker-login 
     - name: Login to GitHub Container Registry  # All the infos are obtained from the environment
       uses: docker/login-action@v2
       with:
@@ -56,16 +56,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }
           
 
-  	#Extract metadata (tags, labels) for Docker
-    #docker-metadata action from Docker, see https://github.com/marketplace/actions/docker-metadata-action
+  	# Extract metadata (tags, labels) for Docker
+    # docker-metadata action from Docker, see https://github.com/marketplace/actions/docker-metadata-action
     - name: Extract Docker metadata
       id: meta
       uses: docker/metadata-action@v4
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-    #Build and push Docker Image with Buildx
-    #build-push action from docker, see https://github.com/marketplace/actions/build-and-push-docker-images
+    # Build and push Docker Image with Buildx
+    # build-push action from docker, see https://github.com/marketplace/actions/build-and-push-docker-images
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
