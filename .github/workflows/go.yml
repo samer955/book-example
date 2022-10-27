@@ -73,3 +73,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }} # Dont push docker image on Pull Request
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          
+    - uses: azure/setup-kubectl@v3
+      with:
+         version: '<version>' # default is latest stable
+      id: install
