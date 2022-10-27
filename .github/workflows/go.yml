@@ -78,3 +78,6 @@ jobs:
       with:
          version: 'latest' # default is latest stable
       id: install
+      
+    - name: Switch to staging cluster
+      run: kubectl apply -f deployment.yaml
