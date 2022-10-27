@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-example
+spec:
+  selector:
+    matchLabels:
+      app: book-example
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: book-example
+    spec:
+      containers:
+      - name: book-example
+        image: ghcr.io/samer955/book-example:1.0.28
+        ports:
+        - containerPort: 8080
