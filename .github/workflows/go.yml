@@ -7,50 +7,71 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Create and publish a Docker image
+name: ci/cd pipeline
 
 on:
   push:
     branches: ['main']
+  pull_request:
+    branches:  none # ['main'] dont build and push an image when pull request
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository }} # in this case will be samer955/book-example
+  IMAGE_TAG: 1.0.${{ github.run_number }} # it will increase the tag number on every push starting from 1.0.0
 
 jobs:
-  build-and-push-image:
+
+  build-push-docker:
+  
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+      id-token: write
+      
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3  # Checkout the repository
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Build # Build the Go Code
+      run: go build -v ./...
+
+    - name: Test  # Test the go Code
+      run: go test -v ./...
+      
+    - name: Set up Docker Buildx # setup for the docker container 
+      uses: docker/setup-buildx-action@v2
+      
+    #Docker Login action for GitHub registry, see https://github.com/marketplace/actions/docker-login 
+    - name: Login to GitHub Container Registry  # All the infos are obtained from the environment
+      uses: docker/login-action@v2
+      with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }
+          
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  	#Extract metadata (tags, labels) for Docker
+    #docker-metadata action from Docker, see https://github.com/marketplace/actions/docker-metadata-action
+    - name: Extract Docker metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
+    #Build and push Docker Image with Buildx
+    #build-push action from docker, see https://github.com/marketplace/actions/build-and-push-docker-images
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
           context: .
-          push: true
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+          push: ${{ github.event_name != 'pull_request' }} # Dont push docker image on Pull Request
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
         
 
