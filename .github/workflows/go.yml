@@ -80,4 +80,7 @@ jobs:
       id: install
       
     - name: Try Minikube
-      run: kubectl get pods -A
+      run: kubectl apply -f deployment.yaml
+      
+    - name: output minikube
+      run: kubectl get pod -A
