@@ -79,8 +79,13 @@ jobs:
          version: 'latest' # default is latest stable
       id: install
       
+    - name: start minikube
+      id: minikube
+      uses: medyagh/setup-minikube@latest
+      
     - name: Try Minikube
       run: kubectl apply -f deployment.yaml
       
-    - name: output minikube
+    - name: Test Pod
       run: kubectl get pod -A
+
