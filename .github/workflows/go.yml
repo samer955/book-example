@@ -80,8 +80,7 @@ jobs:
       id: install
       
     - name: start minikube
-      id: minikube
-      uses: medyagh/setup-minikube@latest
+      run: minikube start
       
     - name: Try Minikube
       run: kubectl apply -f deployment.yaml
