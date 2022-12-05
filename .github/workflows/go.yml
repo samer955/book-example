@@ -74,18 +74,12 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           
-    - uses: azure/setup-kubectl@v3
-      with:
-         version: 'latest' # default is latest stable
-      id: install
-      
-    - name: start minikube
-      id: minikube
-      uses: medyagh/setup-minikube@latest
-      
-    - name: Try Minikube
+    - name: Create kubeconfig
+      run: |
+        mkdir ${HOME}/.kube
+        echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+        cat ${HOME}/.kube/config
+    - name: Use context
+      run: kubectl config use-context octobay-api
+    - name: Deploy to K8s
       run: kubectl apply -f deployment.yaml
-      
-    - name: Test Pod
-      run: kubectl get pod -A
-
