@@ -22,5 +22,7 @@ jobs:
         mkdir ${HOME}/.kube
         echo ${KUBE_CONFIG} | base64 --decode > ${HOME}/.kube/config
         cat ${HOME}/.kube/config
+    - name: Test pods
+      run: kubectl get pods -A
     - name: Deploy to K8s
       run: kubectl apply -f deployment.yaml
