@@ -16,7 +16,7 @@ jobs:
     - name: Create kubeconfig
       run: |
         mkdir ${HOME}/.kube
-        echo ${{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
+        echo ${KUBE_CONFIG} | base64 --decode > ${HOME}/.kube/config
         cat .kube/config
     - name: Use context
       run: kubectl config use-context octobay-api
