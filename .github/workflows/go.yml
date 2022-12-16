@@ -90,7 +90,7 @@ jobs:
     steps:
     
     - name: Switch to dev cluster
-      run: dev1
+      run: echo "dev1"
       
     - name: Display cluster
       run: kubectl get nodes
