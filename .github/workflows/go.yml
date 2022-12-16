@@ -88,9 +88,6 @@ jobs:
     if: needs.build-push-docker.result == 'success'
     
     steps:
-    
-    - name: Switch to dev cluster
-      run: dev1
       
     - name: Display cluster
       run: kubectl get nodes
