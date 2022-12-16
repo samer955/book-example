@@ -24,7 +24,7 @@ jobs:
 
   build-push-docker:
   
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       packages: write
@@ -73,13 +73,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }} # Dont push docker image on Pull Request
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          
-    - name: Create kubeconfig
-      run: |
-        sudo mkdir ${HOME}/.kube
-        sudo echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > "${HOME}/.kube/config"
-        sudo cat "${HOME}/.kube/config"
-    - name: Use context
-      run: kubectl config use-context octobay-api
-    - name: Deploy to K8s
-      run: kubectl apply -f deployment.yaml
