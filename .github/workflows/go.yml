@@ -24,7 +24,7 @@ jobs:
 
   build-push-docker:
   
-    runs-on: self-hosted
+    runs-on: [self-hosted, ubuntu-latest]
     permissions:
       contents: read
       packages: write
@@ -36,7 +36,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: 1.19.2
+        go-version: 1.18
 
     - name: Build # Build the Go Code
       run: go build -v ./...
@@ -49,3 +49,6 @@ jobs:
       
     - name: Deploy to K8s
       run: kubectl apply -f deployment.yaml
+      
+    - name: Display pods
+      run: kubectl get pods -A
