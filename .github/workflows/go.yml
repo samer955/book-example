@@ -90,13 +90,13 @@ jobs:
     steps:
     
     - name: Switch to dev cluster
-      run: echo "dev1"
+      run: dev1
       
     - name: Display cluster
-      run: echo "kubectl get nodes"
+      run: kubectl get nodes
     
     - name: Deploy to K8s
-      run: echo "kubectl apply -f deployment.yaml"
+      run: kubectl apply -f deployment.yaml
       
     - name: Display pods
-      run: echo "kubectl get pods -A"
+      run: kubectl get pods -A
