@@ -92,9 +92,10 @@ jobs:
     - name: Display cluster
       run: kubectl get nodes
     
-    - name: Deploy to K8s
-      run: kubectl apply -f https://github.com/samer955/book-example/blob/main/deployment.yaml
+    - uses: danielr1996/kubectl-action@1.0.0
+      name: Deploy
+      with:
+       args: apply -f deployment.yaml
       
     - name: Display pods
       run: kubectl get pods -A
-
