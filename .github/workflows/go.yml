@@ -91,11 +91,9 @@ jobs:
       
     - name: Display cluster
       run: kubectl get nodes
-    
-    - uses: danielr1996/kubectl-action@1.0.0
-      name: Deploy
-      with:
-       args: apply -f deployment.yaml
+      
+    - name: Applying Manifest
+      run: kubectl apply -f deployment.yaml
       
     - name: Display pods
       run: kubectl get pods -A
