@@ -93,10 +93,10 @@ jobs:
       run: echo "dev1"
       
     - name: Display cluster
-      run: kubectl get nodes
+      run: echo "kubectl get nodes"
     
     - name: Deploy to K8s
-      run: kubectl apply -f deployment.yaml
+      run: echo "kubectl apply -f deployment.yaml"
       
     - name: Display pods
-      run: kubectl get pods -A
+      run: echo "kubectl get pods -A"
