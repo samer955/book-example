@@ -93,5 +93,6 @@ jobs:
           hostname
           export KUBECONFIG=~/.kube/config-dev
           kubectl get nodes
+          cd test_deploy_dev/
           kubectl apply -f deployment.yaml
           kubectl get pods -A
