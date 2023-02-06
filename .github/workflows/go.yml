@@ -73,27 +73,12 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }} # Dont push docker image on Pull Request
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-
-  deploy-to-k8s:
-  
-    runs-on: self-hosted
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
       
-    needs:
-      - build-push-docker
-    if: needs.build-push-docker.result == 'success'
-    
-    steps:
-      
-    - name: Display cluster
-      run: kubectl get nodes
-      
-    - name: Applying Manifest
-      run: kubectl apply -f deployment.yaml
-      
-    - name: Display pods
-      run: kubectl get pods -A
+    - name: Deploy to remote server
+      uses: appleboy/ssh-action@master
+      with:
+        host: 13.50.58.28
+        username: admin
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          hostname
