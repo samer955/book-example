@@ -82,5 +82,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           hostname
-          dev1
+          export KUBECONFIG=~/.kube/config-dev
           kubectl get nodes
