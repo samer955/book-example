@@ -73,6 +73,15 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }} # Dont push docker image on Pull Request
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}  # or ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          
+    - name: Copy deployment.yaml to the remote server 
+      uses: appleboy/scp-action@master
+      with:
+        host: 15.55.10.11
+        username: admin
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: deployment.yaml
+        target: ~/test_deploy_dev/deployment.yaml
       
     - name: Deploy to remote server
       uses: appleboy/ssh-action@master
